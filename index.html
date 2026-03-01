@@ -412,22 +412,51 @@ footer{background:var(--bark);padding:3rem 4rem 2rem}
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-function adopt(name) {
-  alert('💛 We\'d love to connect you with ' + name + '!\n\nEmail: homefurever.nagpayong@gmail.com\nCall: 09604187432');
-}
-function closeMenu() {
-  document.getElementById('mobileNav').classList.remove('open');
-}
-document.getElementById('hamburger').addEventListener('click', function() {
-  document.getElementById('mobileNav').classList.toggle('open');
-});
-document.querySelectorAll('.amount-chip').forEach(chip => {
-  chip.addEventListener('click', function() {
-    document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('active'));
-    this.classList.add('active');
-    const a = this.textContent.replace('₱','');
-    document.querySelector('.donate-cta').textContent = a === 'Custom' ? 'Enter Custom Amount 🐾' : 'Donate ₱' + a + ' Today 🐾';
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Hamburger menu
+  var hamburger = document.getElementById('hamburger');
+  var mobileNav = document.getElementById('mobileNav');
+
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileNav.classList.toggle('open');
+    });
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!mobileNav.contains(e.target) && !hamburger.contains(e.target)) {
+        mobileNav.classList.remove('open');
+      }
+    });
+  }
+
+  // Close menu when a link is clicked
+  var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+  mobileLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      mobileNav.classList.remove('open');
+    });
   });
+
+  // Adopt button
+  window.adopt = function(name) {
+    alert('💛 We\'d love to connect you with ' + name + '!\n\nEmail: homefurever.nagpayong@gmail.com\nCall: 09604187432');
+  };
+
+  // Donate amount chips
+  document.querySelectorAll('.amount-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.amount-chip').forEach(function(c) { c.classList.remove('active'); });
+      this.classList.add('active');
+      var a = this.textContent.replace('₱', '');
+      var btn = document.querySelector('.donate-cta');
+      if (btn) btn.textContent = a === 'Custom' ? 'Enter Custom Amount 🐾' : 'Donate ₱' + a + ' Today 🐾';
+    });
+  });
+
 });
-const obs =
+</script>
+</body>
+</html>
